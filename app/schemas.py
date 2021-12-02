@@ -16,6 +16,7 @@ class Reserva(BaseModel):
 class Respuesta(BaseModel):
     mensaje: str
 
+
 class Orden(BaseModel):
     id_orden: Optional[int]
     pedido: str

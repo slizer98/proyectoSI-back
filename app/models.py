@@ -11,6 +11,7 @@ class Reserva(Base):
     personas = Column(Integer)
     comentarios = Column(String(100))
 
+
 class Orden(Base):
     __tablename__ = 'ordenes'
     id_orden = Column(Integer, primary_key=True)

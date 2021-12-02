@@ -33,8 +33,8 @@ def main():
     return RedirectResponse(url='/docs')
 
 @app.get("/reservaciones/", response_model=List[schemas.Reserva], tags=["reservaciones"])
-def show_reservas(db:Session = Depends(get_db)):
-    reservaciones = db.query(models.Reserva).all()
+def show_reservas(mesa_id:int,db:Session = Depends(get_db)):
+    reservaciones = db.query(models.Reserva).filter(models.Reserva.id == mesa_id).all()
     return reservaciones
 
 @app.post("/reservaciones/", response_model=schemas.Reserva, tags=['reservaciones'])
@@ -52,15 +52,21 @@ def create_reservas(entrada:schemas.Reserva, db:Session = Depends(get_db)):
     db.refresh(reservacion)
     return reservacion
 
-@app.put("/reservaciones/{mesa_id}", response_model=schemas.Reserva, tags=['reservaciones'])
+@app.put("/reservaciones/", response_model=schemas.Reserva, tags=['reservaciones'])
 def update_reservas(mesa_id:int,entrada:schemas.Reserva, db:Session = Depends(get_db)):
     reservacion = db.query(models.Reserva).filter(models.Reserva.id == mesa_id).first()
     reservacion.nombre = entrada.nombre
+    reservacion.apellido = entrada.apellido
+    reservacion.fecha_reserva = entrada.fecha_reserva
+    reservacion.telefono = entrada.telefono
+    reservacion.personas = entrada.personas
+    reservacion.comentarios = entrada.comentarios
+    db.add(reservacion)
     db.commit()
     db.refresh(reservacion)
     return reservacion
 
-@app.delete("/reservaciones/{mesa_id}", response_model=schemas.Respuesta, tags=['reservaciones'])
+@app.delete("/reservaciones/", response_model=schemas.Respuesta, tags=['reservaciones'])
 def delete_reservas(mesa_id:int, db:Session = Depends(get_db)):
     reservacion = db.query(models.Reserva).filter(models.Reserva.id == mesa_id).first()
     db.delete(reservacion)
@@ -76,7 +82,7 @@ def show_ordenes(db:Session = Depends(get_db)):
     ordenes = db.query(models.Orden).all()
     return ordenes
 
-@app.post("/Ordenes/", response_model=schemas.Orden, tags=['Ordenes'])
+@app.post("/ordenes/", response_model=schemas.Orden, tags=['Ordenes'])
 def create_orden(entrada:schemas.Orden, db:Session = Depends(get_db)):
     ordenes = models.Orden(
         pedido = entrada.pedido,

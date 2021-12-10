@@ -15,6 +15,5 @@ class Reserva(Base):
 class Orden(Base):
     __tablename__ = 'ordenes'
     id_orden = Column(Integer, primary_key=True)
-    pedido = Column(String(400))
-    cantidad = Column(Integer)
-    total = Column(Integer)
+    title = Column(String(400))
+    precio = Column(Integer)

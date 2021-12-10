@@ -85,9 +85,8 @@ def show_ordenes(db:Session = Depends(get_db)):
 @app.post("/ordenes/", response_model=schemas.Orden, tags=['Ordenes'])
 def create_orden(entrada:schemas.Orden, db:Session = Depends(get_db)):
     ordenes = models.Orden(
-        pedido = entrada.pedido,
-        cantidad = entrada.cantidad,
-        total = entrada.total,
+        title = entrada.title,
+        precio = entrada.precio,
     )
     db.add(ordenes)
     db.commit()

@@ -19,9 +19,8 @@ class Respuesta(BaseModel):
 
 class Orden(BaseModel):
     id_orden: Optional[int]
-    pedido: str
-    cantidad: int
-    total: float
+    title: str
+    precio: int
 
     class Config:
         orm_mode = True
